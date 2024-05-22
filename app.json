@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "my-memory",
+    "slug": "my-memory",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "my-memory"
+}
