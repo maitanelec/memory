@@ -6,52 +6,38 @@ const Juego = ({ arrayCartas, nivelElegido, changePantallaActualTo }) => {
     const [parejaFormada, setParejaFormada] = useState([]);
     const [cartasAMostrar, setCartasAMostrar] = useState([]);
 
-    let shuffledCards = [];
-    let numCartasMostrar = 0;
-    let arrayTableroCartas = [];
-    let arrayCortado = [];
+    useEffect(() => {
+        let numCartasMostrar;
+        if (nivelElegido === "principiante") {
+            numCartasMostrar = 6;
+        } else if (nivelElegido === "medio") {
+            numCartasMostrar = 8;
+        } else {
+            numCartasMostrar = 10;
+        }
+
+        const arrayCortado = arrayCartas.slice(0, numCartasMostrar);
+        const shuffledCards = [...arrayCortado, ...arrayCortado].sort(() => Math.random() - 0.5).map((carta, index) => ({ ...carta, id: index }));
+        setCartasAMostrar(shuffledCards);
+    }, [nivelElegido, arrayCartas]);
 
     useEffect(() => {
         if (cartasClicadas.length === 2) {
-            console.log("cartas",cartasClicadas)
             const [primeraCarta, segundaCarta] = cartasClicadas;
-            if (primeraCarta != segundaCarta) {
+            if (primeraCarta.value !== segundaCarta.value) {
                 setTimeout(() => setCartasClicadas([]), 1000);
-            } else { 
+            } else {
                 setParejaFormada((prev) => [...prev, primeraCarta, segundaCarta]);
                 setCartasClicadas([]);
             }
         }
-    },[cartasClicadas,shuffledCards]);
+    }, [cartasClicadas]);
 
-    useEffect(() => {
-        arrayCortado = arrayCartas.slice(0, numCartasMostrar);
-        shuffledCards = [...arrayCortado, ...arrayCortado];
-        shuffledCards.sort(() => Math.random() - 0.5).map((carta) => ({ ...carta }));
-        setCartasAMostrar(shuffledCards)
-    },[nivelElegido])
-
-    const handlePress = (idx) => {
-        if (cartasClicadas.length < 2 && !cartasClicadas.includes(idx) && !parejaFormada.includes(idx)) {
-            setCartasClicadas((prev) => [...prev, idx]);
+    const handlePress = (carta) => {
+        if (cartasClicadas.length < 2 && !cartasClicadas.some(c => c.id === carta.id) && !parejaFormada.some(c => c.id === carta.id)) {
+            setCartasClicadas((prev) => [...prev, carta]);
         }
-    }
-
-    if (nivelElegido == "principiante") {
-        numCartasMostrar = 6;
-    } else if (nivelElegido == "medio") {
-        numCartasMostrar = 8;
-    } else {
-        numCartasMostrar = 10;
-    }
-
-    cartasAMostrar.map((carta, idx) => {
-        arrayTableroCartas.push(
-            <TouchableOpacity style={styles.contenedorCarta} onPress={() => handlePress(idx)} key={idx}>
-                <Image source={(cartasClicadas.includes(idx) || parejaFormada.includes(idx)) ? carta : require("../assets/img/carta-de-juego.png")} style={styles.carta} />
-            </TouchableOpacity>
-        )
-    })
+    };
 
     return (
         <View style={styles.container}>
@@ -59,10 +45,21 @@ const Juego = ({ arrayCartas, nivelElegido, changePantallaActualTo }) => {
                 <Image source={require("../assets/img/volver.png")} style={styles.btnVolver} />
             </TouchableOpacity>
             <View style={styles.contenedorFondoCartas}>
-                {arrayTableroCartas}
+                {cartasAMostrar.map((carta) => (
+                    <TouchableOpacity
+                        key={carta.id}
+                        style={styles.contenedorCarta}
+                        onPress={() => handlePress(carta)}
+                    >
+                        <Image
+                            source={(cartasClicadas.includes(carta) || parejaFormada.includes(carta)) ? carta.image : require("../assets/img/carta-de-juego.png")}
+                            style={styles.carta}
+                        />
+                    </TouchableOpacity>
+                ))}
             </View>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

@@ -5,7 +5,18 @@ import Login from './src/components/login';
 import Juego from './src/components/juego';
 import Niveles from './src/components/niveles';
 
-const arrayCartas = [require("./src/assets/img/abeja.png"), require("./src/assets/img/anaconda.png"), require("./src/assets/img/cangrejo.png"), require("./src/assets/img/medusa.png"), require("./src/assets/img/oveja.png"), require("./src/assets/img/pinguino.png"), require("./src/assets/img/polluelo.png"), require("./src/assets/img/rana.png"), require("./src/assets/img/mono.png"), require("./src/assets/img/zorro.png")];
+const arrayCartas = [
+  {value: "abeja", image: require("./src/assets/img/abeja.png")}, 
+  {value: "anaconda", image: require("./src/assets/img/anaconda.png")}, 
+  {value: "cangrejo", image: require("./src/assets/img/cangrejo.png")}, 
+  {value: "medusa", image: require("./src/assets/img/medusa.png")}, 
+  {value: "oveja", image: require("./src/assets/img/oveja.png")}, 
+  {value: "pinguino", image: require("./src/assets/img/pinguino.png")}, 
+  {value: "polluelo", image: require("./src/assets/img/polluelo.png")},
+  {value: "rana", image: require("./src/assets/img/rana.png")}, 
+  {value: "mono", image: require("./src/assets/img/mono.png")}, 
+  {value: "zorro", image: require("./src/assets/img/zorro.png")}
+];
 
 export default function App() {
   const [pantallaActual, setPantallaActual] = useState("login");
