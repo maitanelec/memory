@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 import Login from './src/components/login';
 import Juego from './src/components/juego';
 import Niveles from './src/components/niveles';
+import Clasificacion from './src/components/clasificacion';
 
 const arrayCartas = [
   {value: "abeja", image: require("./src/assets/img/abeja.png")}, 
@@ -22,6 +23,7 @@ export default function App() {
   const [pantallaActual, setPantallaActual] = useState("login");
   const [nombreJugador, setNombreJugador] = useState("");
   const [nivelElegido, setNivelElegido] = useState("");
+  const [intentos, setIntentos] = useState(0);
 
   function changePantallaActualTo(pantallaName) {
     return () => {
@@ -33,7 +35,8 @@ export default function App() {
     <>
       {pantallaActual === "login" && <Login changePantallaActualTo={changePantallaActualTo("niveles")} nombreJugador={nombreJugador} setNombreJugador={setNombreJugador} />}
       {pantallaActual === "niveles" && <Niveles setNivelElegido={setNivelElegido} changePantallaActualTo={changePantallaActualTo("juego")} />}
-      {pantallaActual === "juego" && <Juego arrayCartas={arrayCartas} nivelElegido={nivelElegido} changePantallaActualTo={changePantallaActualTo("niveles")} />}
+      {pantallaActual === "juego" && <Juego arrayCartas={arrayCartas} nivelElegido={nivelElegido} intentos={intentos} setIntentos={setIntentos} changePantallaActualTo={changePantallaActualTo("niveles")} changePantallaActualToClasificacion={changePantallaActualTo("clasificacion")}/>}
+      {pantallaActual === "clasificacion" && <Clasificacion nombreJugador={nombreJugador} intentos={intentos}/>}
     </>
   )
 }
