@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import LottieView from 'lottie-react-native';
+import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, Text } from 'react-native';
 
 const Juego = ({ arrayCartas, nivelElegido, changePantallaActualTo }) => {
     const [cartasClicadas, setCartasClicadas] = useState([]);
     const [parejaFormada, setParejaFormada] = useState([]);
     const [cartasAMostrar, setCartasAMostrar] = useState([]);
+    var [intentos, setIntentos] = useState(0);
+    const lottieRef = useRef(null);
+
+    function triggerConfetti() {
+        lottieRef.current.play(0);
+    }
 
     useEffect(() => {
-        let numCartasMostrar;
+        var numCartasMostrar;
         if (nivelElegido === "principiante") {
             numCartasMostrar = 6;
         } else if (nivelElegido === "medio") {
@@ -41,8 +47,22 @@ const Juego = ({ arrayCartas, nivelElegido, changePantallaActualTo }) => {
         }
     };
 
+    useEffect(() => {
+        if (parejaFormada.length > 0 && parejaFormada.length === cartasAMostrar.length) {
+            triggerConfetti();
+        }
+    }, [parejaFormada]);
+
     return (
         <View style={styles.container}>
+            <LottieView
+                ref={lottieRef}
+                source={require('../assets/confetti.json')}
+                autoPlay={false}
+                loop={false}
+                style={styles.lottie}
+                resizeMode='cover'
+            />
             <TouchableOpacity style={styles.contenedorFlecha} onPress={() => changePantallaActualTo()}>
                 <Image source={require("../assets/img/volver.png")} style={styles.btnVolver} />
             </TouchableOpacity>
@@ -103,6 +123,16 @@ const styles = StyleSheet.create({
     carta: {
         width: 65,
         height: 65,
+    },
+    lottie: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zindex: 2,
+        pointerEvents: 'none',
+    },
     intentos: {
         marginTop: 10
     }
