@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Image, Text } from 'react-native';
 
 const Juego = ({ arrayCartas, nivelElegido, changePantallaActualTo }) => {
     const [cartasClicadas, setCartasClicadas] = useState([]);
@@ -26,6 +27,7 @@ const Juego = ({ arrayCartas, nivelElegido, changePantallaActualTo }) => {
             const [primeraCarta, segundaCarta] = cartasClicadas;
             if (primeraCarta.value !== segundaCarta.value) {
                 setTimeout(() => setCartasClicadas([]), 1000);
+                setIntentos(intentos += 1)
             } else {
                 setParejaFormada((prev) => [...prev, primeraCarta, segundaCarta]);
                 setCartasClicadas([]);
@@ -58,6 +60,7 @@ const Juego = ({ arrayCartas, nivelElegido, changePantallaActualTo }) => {
                     </TouchableOpacity>
                 ))}
             </View>
+            <Text style={styles.intentos}>Intentos: {intentos}</Text>
         </View>
     );
 }
@@ -94,17 +97,14 @@ const styles = StyleSheet.create({
         padding: 2,
         display: "flex",
         alignItems: "center",
-        /* backgroundColor: "#e11d48", */
         borderRadius: 0.4,
         padding: 1
-    },
-    card: {
-        width: 65,
-        height: 5,
     },
     carta: {
         width: 65,
         height: 65,
+    intentos: {
+        marginTop: 10
     }
 });
 
