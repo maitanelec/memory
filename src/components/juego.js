@@ -8,7 +8,6 @@ const Juego = ({ arrayCartas, nivelElegido, intentos, setIntentos, changePantall
   const [parejaFormada, setParejaFormada] = useState([]);
   const [cartasAMostrar, setCartasAMostrar] = useState([]);
   const [btnHabilitado, setBtnHabilitado] = useState(false);
-  console.log("btn", btnHabilitado);
   const lottieRef = useRef(null);
 
   function triggerConfetti() {
@@ -35,11 +34,11 @@ const Juego = ({ arrayCartas, nivelElegido, intentos, setIntentos, changePantall
       const [primeraCarta, segundaCarta] = cartasClicadas;
       if (primeraCarta.value !== segundaCarta.value) {
         setTimeout(() => setCartasClicadas([]), 1000);
-        setIntentos(intentos += 1)
       } else {
         setParejaFormada((prev) => [...prev, primeraCarta, segundaCarta]);
         setCartasClicadas([]);
       }
+      setIntentos(intentos += 1)
     }
   }, [cartasClicadas]);
 
@@ -58,7 +57,7 @@ const Juego = ({ arrayCartas, nivelElegido, intentos, setIntentos, changePantall
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={fondo} style={styles.fondoJuego}>
+      {/* <ImageBackground source={fondo} style={styles.fondoJuego}> */}
         <LottieView
           ref={lottieRef}
           source={require('../assets/confetti.json')}
@@ -88,7 +87,7 @@ const Juego = ({ arrayCartas, nivelElegido, intentos, setIntentos, changePantall
         <TouchableOpacity style={(btnHabilitado != true) ? styles.contenedorBtnClasificacionDeshabilitado : styles.contenedorBtnClasificacionHabilitado} disabled={!btnHabilitado} onPress={() => changePantallaActualToClasificacion()}>
           <Text style={styles.txtClasificacion}>Clasificación</Text>
         </TouchableOpacity>
-      </ImageBackground>
+      {/* </ImageBackground> */}
     </View>
   );
 }

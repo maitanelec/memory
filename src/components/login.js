@@ -15,7 +15,7 @@ const Login = ({ changePantallaActualTo, nombreJugador, setNombreJugador }) => {
                 onChangeText={setNombreJugador}
                 placeholder="Introduce nombre"
             />
-            <Button color="#8BC34A" title="Elegir nivel" onPress={changeNextScreen} />
+            <Button color="#6cf5c2" title="Elegir nivel" onPress={changeNextScreen} />
         </View>
     )
 }
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     tituloLogin: {
-        color: "#00BCD4",
+        color: "#60b7ff",
         fontWeight: "bold",
         fontSize: 60,
     },

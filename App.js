@@ -30,7 +30,7 @@ export default function App() {
       setPantallaActual(pantallaName);
     };
   }
-
+  console.log("nombre app",nombreJugador)
   return (
     <>
       {pantallaActual === "login" && <Login changePantallaActualTo={changePantallaActualTo("niveles")} nombreJugador={nombreJugador} setNombreJugador={setNombreJugador} />}
