@@ -1,17 +1,22 @@
 import LottieView from 'lottie-react-native';
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, View, TouchableOpacity, Image, Text, ImageBackground } from 'react-native';
-const fondo = require("../assets/img/fondo.jpg");
+import { StyleSheet, View, TouchableOpacity, Image, Text } from 'react-native';
 
-const Juego = ({ arrayCartas, nivelElegido, intentos, setIntentos, changePantallaActualTo, changePantallaActualToClasificacion }) => {
+const Juego = ({ arrayCartas, nivelElegido, intentos, setIntentos, timer, setTimer, changePantallaActualTo, changePantallaActualToClasificacion }) => {
   const [cartasClicadas, setCartasClicadas] = useState([]);
   const [parejaFormada, setParejaFormada] = useState([]);
   const [cartasAMostrar, setCartasAMostrar] = useState([]);
   const [btnHabilitado, setBtnHabilitado] = useState(false);
+  const [timerActive, setTimerActive] = useState(false);
   const lottieRef = useRef(null);
 
   function triggerConfetti() {
     lottieRef.current.play(0);
+  }
+
+  function volverAlMenuNiveles() {
+    setIntentos(0);
+    changePantallaActualTo();
   }
 
   useEffect(() => {
@@ -38,11 +43,24 @@ const Juego = ({ arrayCartas, nivelElegido, intentos, setIntentos, changePantall
         setParejaFormada((prev) => [...prev, primeraCarta, segundaCarta]);
         setCartasClicadas([]);
       }
-      setIntentos(intentos += 1)
+      setIntentos(intentos + 1);
     }
   }, [cartasClicadas]);
 
+  useEffect(() => {
+    let interval;
+    if (timerActive) {
+      interval = setInterval(() => {
+        setTimer(prevTimer => prevTimer + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timerActive]);
+
   const handlePress = (carta) => {
+    if (!timerActive) {
+      setTimerActive(true);
+    }
     if (cartasClicadas.length < 2 && !cartasClicadas.some(c => c.id === carta.id) && !parejaFormada.some(c => c.id === carta.id)) {
       setCartasClicadas((prev) => [...prev, carta]);
     }
@@ -52,42 +70,43 @@ const Juego = ({ arrayCartas, nivelElegido, intentos, setIntentos, changePantall
     if (parejaFormada.length > 0 && parejaFormada.length === cartasAMostrar.length) {
       triggerConfetti();
       setBtnHabilitado(true);
+      setTimerActive(false);
     }
   }, [parejaFormada]);
 
   return (
     <View style={styles.container}>
-      {/* <ImageBackground source={fondo} style={styles.fondoJuego}> */}
-        <LottieView
-          ref={lottieRef}
-          source={require('../assets/confetti.json')}
-          autoPlay={false}
-          loop={false}
-          style={styles.lottie}
-          resizeMode='cover'
-        />
-        <TouchableOpacity style={styles.contenedorFlecha} onPress={() => changePantallaActualTo()}>
-          <Image source={require("../assets/img/volver.png")} style={styles.btnVolver} />
-        </TouchableOpacity>
-        <View style={styles.contenedorFondoCartas}>
-          {cartasAMostrar.map((carta) => (
-            <TouchableOpacity
-              key={carta.id}
-              style={styles.contenedorCarta}
-              onPress={() => handlePress(carta)}
-            >
-              <Image
-                source={(cartasClicadas.includes(carta) || parejaFormada.includes(carta)) ? carta.image : require("../assets/img/carta-de-juego.png")}
-                style={styles.carta}
-              />
-            </TouchableOpacity>
-          ))}
-        </View>
-        <Text style={styles.intentos}>Intentos: {intentos}</Text>
-        <TouchableOpacity style={(btnHabilitado != true) ? styles.contenedorBtnClasificacionDeshabilitado : styles.contenedorBtnClasificacionHabilitado} disabled={!btnHabilitado} onPress={() => changePantallaActualToClasificacion()}>
-          <Text style={styles.txtClasificacion}>Clasificación</Text>
-        </TouchableOpacity>
-      {/* </ImageBackground> */}
+      <LottieView
+        ref={lottieRef}
+        source={require('../assets/confetti.json')}
+        autoPlay={false}
+        loop={false}
+        style={styles.lottie}
+        resizeMode='cover'
+      />
+      <TouchableOpacity style={styles.contenedorFlecha} onPress={() => volverAlMenuNiveles()}>
+        <Image source={require("../assets/img/volver.png")} style={styles.btnVolver} />
+      </TouchableOpacity>
+      
+      <View style={styles.contenedorFondoCartas}>
+        {cartasAMostrar.map((carta) => (
+          <TouchableOpacity
+            key={carta.id}
+            style={styles.contenedorCarta}
+            onPress={() => handlePress(carta)}
+          >
+            <Image
+              source={(cartasClicadas.includes(carta) || parejaFormada.includes(carta)) ? carta.image : require("../assets/img/carta-de-juego.png")}
+              style={styles.carta}
+            />
+          </TouchableOpacity>
+        ))}
+      </View>
+      <Text style={styles.intentos}>Intentos: {intentos}</Text>
+      <Text style={styles.timer}>Tiempo: {timer} s</Text>
+      <TouchableOpacity style={(btnHabilitado != true) ? styles.contenedorBtnClasificacionDeshabilitado : styles.contenedorBtnClasificacionHabilitado} disabled={!btnHabilitado} onPress={() => changePantallaActualToClasificacion()}>
+        <Text style={styles.txtClasificacion}>Clasificación</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -148,6 +167,9 @@ const styles = StyleSheet.create({
   },
   intentos: {
     marginTop: 10
+  },
+  timer: {
+    marginTop: 10,
   },
   contenedorBtnClasificacionHabilitado: {
     backgroundColor: "#8746FF",

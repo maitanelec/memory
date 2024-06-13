@@ -1,8 +1,7 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
 const podio = require("../assets/img/podio.png");
 
-const Clasificacion = ({ nombreJugador, intentos }) => {
-  console.log("nombre",nombreJugador)
+const Clasificacion = ({ nombreJugador, intentos, timer }) => {
   return (
     <View style={styles.container}>
       <Image source={podio} style={styles.podio} />
@@ -16,12 +15,12 @@ const Clasificacion = ({ nombreJugador, intentos }) => {
         <View style={styles.filaTabla}>
           <Text style={styles.celdaTabla}>{nombreJugador}</Text>
           <Text style={styles.celdaTabla}>{intentos}</Text>
-          <Text style={styles.celdaTabla}>Row 1, Cell 3</Text>
+          <Text style={styles.celdaTabla}>{timer} s</Text>
         </View>
         <View style={styles.filaTabla}>
-          <Text style={styles.celdaTabla}>Row 2, Cell 1</Text>
-          <Text style={styles.celdaTabla}>Row 2, Cell 2</Text>
-          <Text style={styles.celdaTabla}>Row 2, Cell 3</Text>
+          <Text style={styles.celdaTabla}></Text>
+          <Text style={styles.celdaTabla}></Text>
+          <Text style={styles.celdaTabla}></Text>
         </View>
       </View>
     </View>
@@ -76,7 +75,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     width: 200,
-    height: 80,
+    height: 50,
     textAlign: "center",
     fontSize: 18,
     color: "black",

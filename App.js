@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
 
 import Login from './src/components/login';
 import Juego from './src/components/juego';
@@ -24,28 +23,20 @@ export default function App() {
   const [nombreJugador, setNombreJugador] = useState("");
   const [nivelElegido, setNivelElegido] = useState("");
   const [intentos, setIntentos] = useState(0);
+  const [timer, setTimer] = useState(0);
 
   function changePantallaActualTo(pantallaName) {
     return () => {
       setPantallaActual(pantallaName);
     };
   }
-  console.log("nombre app",nombreJugador)
+
   return (
     <>
       {pantallaActual === "login" && <Login changePantallaActualTo={changePantallaActualTo("niveles")} nombreJugador={nombreJugador} setNombreJugador={setNombreJugador} />}
       {pantallaActual === "niveles" && <Niveles setNivelElegido={setNivelElegido} changePantallaActualTo={changePantallaActualTo("juego")} />}
-      {pantallaActual === "juego" && <Juego arrayCartas={arrayCartas} nivelElegido={nivelElegido} intentos={intentos} setIntentos={setIntentos} changePantallaActualTo={changePantallaActualTo("niveles")} changePantallaActualToClasificacion={changePantallaActualTo("clasificacion")}/>}
-      {pantallaActual === "clasificacion" && <Clasificacion nombreJugador={nombreJugador} intentos={intentos}/>}
+      {pantallaActual === "juego" && <Juego arrayCartas={arrayCartas} nivelElegido={nivelElegido} intentos={intentos} setIntentos={setIntentos} timer={timer} setTimer={setTimer} changePantallaActualTo={changePantallaActualTo("niveles")} changePantallaActualToClasificacion={changePantallaActualTo("clasificacion")}/>}
+      {pantallaActual === "clasificacion" && <Clasificacion nombreJugador={nombreJugador} intentos={intentos} timer={timer}/>}
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
