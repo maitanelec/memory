@@ -36,7 +36,7 @@ export default function App() {
       {pantallaActual === "login" && <Login changePantallaActualTo={changePantallaActualTo("niveles")} nombreJugador={nombreJugador} setNombreJugador={setNombreJugador} />}
       {pantallaActual === "niveles" && <Niveles setNivelElegido={setNivelElegido} changePantallaActualTo={changePantallaActualTo("juego")} />}
       {pantallaActual === "juego" && <Juego arrayCartas={arrayCartas} nivelElegido={nivelElegido} intentos={intentos} setIntentos={setIntentos} timer={timer} setTimer={setTimer} changePantallaActualTo={changePantallaActualTo("niveles")} changePantallaActualToClasificacion={changePantallaActualTo("clasificacion")}/>}
-      {pantallaActual === "clasificacion" && <Clasificacion nombreJugador={nombreJugador} intentos={intentos} timer={timer}/>}
+      {pantallaActual === "clasificacion" && <Clasificacion nombreJugador={nombreJugador} intentos={intentos} timer={timer} changePantallaActualTo={changePantallaActualTo("login")}/>}
     </>
   )
 }

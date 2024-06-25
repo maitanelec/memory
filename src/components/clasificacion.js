@@ -1,7 +1,11 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Button } from 'react-native';
 const podio = require("../assets/img/podio.png");
 
-const Clasificacion = ({ nombreJugador, intentos, timer }) => {
+const Clasificacion = ({ nombreJugador, intentos, timer, changePantallaActualTo }) => {
+  function changeNextScreen() {
+    changePantallaActualTo()
+  }
+
   return (
     <View style={styles.container}>
       <Image source={podio} style={styles.podio} />
@@ -23,6 +27,8 @@ const Clasificacion = ({ nombreJugador, intentos, timer }) => {
           <Text style={styles.celdaTabla}></Text>
         </View>
       </View>
+
+      <Button color="#6cf5c2" title="Volver a jugar" onPress={changeNextScreen} />
     </View>
   )
 }
