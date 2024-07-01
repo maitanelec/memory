@@ -16,6 +16,7 @@ const Juego = ({ arrayCartas, nivelElegido, intentos, setIntentos, timer, setTim
 
   function volverAlMenuNiveles() {
     setIntentos(0);
+    setTimer(0);
     changePantallaActualTo();
   }
 
